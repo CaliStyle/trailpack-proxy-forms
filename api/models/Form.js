@@ -1,6 +1,9 @@
+/* eslint new-cap: [0] */
 'use strict'
 
 const Model = require('trails/model')
+const helpers = require('proxy-engine-helpers')
+// const _ = require('lodash')
 
 /**
  * @module Form
@@ -24,7 +27,16 @@ module.exports = class Form extends Model {
     let schema = {}
     if (app.config.database.orm === 'sequelize') {
       schema = {
-
+        name: {
+          type: Sequelize.STRING
+        },
+        data: helpers.JSONB('Form', app, Sequelize, 'data', {
+          defaultValue: {}
+        }),
+        live_mode: {
+          type: Sequelize.BOOLEAN,
+          defaultValue: app.config.proxyEngine.live_mode
+        }
       }
     }
     return schema
